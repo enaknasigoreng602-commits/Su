@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fahmi AI Studio – Model Gratis | Chat • Analisis • Roblox</title>
+  <style>
+    :root {
+      --bg: #020510;
+      --surface: rgba(8, 14, 35, 0.85);
+      --surface2: rgba(14, 22, 48, 0.75);
+      --border: rgba(60, 120, 255, 0.3);
+      --text: #e8f0ff;
+      --text2: #8ba8e0;
+      --accent: #3b82f6;
+      --accent2: #60a5fa;
+      --gold: #f5b042;
+      --green: #22c55e;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --roblox: #ff4d4d;
+      --shadow: 0 8px 40px rgba(0,0,0,0.8);
+      --radius: 20px;
+      --radius-sm: 14px;
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:'Segoe UI','Inter',system-ui,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:10px;
+      background-image:radial-gradient(ellipse at 15% 10%,rgba(59,130,246,.15) 0%,transparent 55%),radial-gradient(ellipse at 85% 70%,rgba(96,165,250,.08) 0%,transparent 55%),radial-gradient(ellipse at 50% 90%,rgba(34,197,94,.05) 0%,transparent 50%);
+    }
+    .app-container{
+      width:100%;max-width:940px;
+      background:var(--surface);
+      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+      border-radius:var(--radius);border:1px solid var(--border);
+      box-shadow:var(--shadow);overflow:hidden;
+      display:flex;flex-direction:column;
+      max-height:97vh;height:95vh;
+    }
+    .app-header{
+      padding:10px 16px;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;
+      flex-wrap:wrap;gap:6px;background:rgba(8,14,35,.9);
+      backdrop-filter:blur(8px);flex-shrink:0;
+    }
+    .logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1rem;letter-spacing:-0.3px}
+    .logo .icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#2563eb);display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 0 16px rgba(59,130,246,.5)}
+    .header-right{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+    .badge{
+      display:flex;align-items:center;gap:4px;padding:5px 10px;
+      border-radius:20px;font-size:.65rem;font-weight:600;white-space:nowrap;
+      letter-spacing:.3px;background:rgba(255,255,255,.04);
+      border:1px solid var(--border);color:var(--text2);
+      cursor:pointer;user-select:none;transition:var(--transition);
+    }
+    .badge.on{border-color:currentColor;box-shadow:0 0 12px currentColor}
+    .thinking-badge.on{color:var(--gold);border-color:var(--gold);animation:glow-gold 2s ease-in-out infinite}
+    .search-badge.on{color:var(--green);border-color:var(--green);animation:glow-green 2s ease-in-out infinite}
+    @keyframes glow-gold{0%,100%{box-shadow:0 0 6px var(--gold)}50%{box-shadow:0 0 20px var(--gold)}}
+    @keyframes glow-green{0%,100%{box-shadow:0 0 6px var(--green)}50%{box-shadow:0 0 20px var(--green)}}
+    .dot{width:6px;height:6px;border-radius:50%;display:inline-block;background:currentColor;animation:bounce-dot .8s ease-in-out infinite}
+    .dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+    @keyframes bounce-dot{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(-4px);opacity:.3}}
+    .model-select{
+      padding:5px 10px;border-radius:14px;border:1px solid var(--border);
+      background:rgba(8,14,35,.7);color:var(--text);font-family:inherit;
+      font-size:.66rem;font-weight:500;cursor:pointer;outline:none;
+      transition:var(--transition);backdrop-filter:blur(4px);max-width:170px;
+    }
+    .model-select:hover,.model-select:focus{border-color:var(--accent2);box-shadow:0 0 10px rgba(59,130,246,.2)}
+    .mode-tabs{display:flex;gap:2px;padding:3px;background:rgba(8,14,35,.5);border-radius:20px;border:1px solid var(--border)}
+    .mode-tab{
+      padding:6px 12px;border-radius:16px;border:none;cursor:pointer;
+      font-weight:600;font-size:.7rem;transition:var(--transition);
+      background:transparent;color:var(--text2);white-space:nowrap;
+      font-family:inherit;letter-spacing:-.2px;
+    }
+    .mode-tab.active{background:var(--accent);color:#fff;box-shadow:0 2px 10px rgba(59,130,246,.5)}
+    .mode-tab.roblox-active{background:var(--roblox);color:#fff;box-shadow:0 2px 10px rgba(255,77,77,.5)}
+    .mode-tab:hover:not(.active):not(.roblox-active){background:rgba(255,255,255,.04);color:#fff}
+    .app-body{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+    .app-body::-webkit-scrollbar{width:5px}.app-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+    .upload-area{
+      border:2px dashed var(--border);border-radius:var(--radius);
+      padding:20px 14px;text-align:center;cursor:pointer;
+      transition:var(--transition);background:rgba(14,22,48,.4);
+      backdrop-filter:blur(4px);min-height:100px;
+      display:flex;flex-direction:column;align-items:center;
+      justify-content:center;gap:5px;position:relative;flex-shrink:0;
+    }
+    .upload-area:hover,.upload-area.drag-over{border-color:var(--accent2);background:rgba(59,130,246,.06);box-shadow:0 0 25px rgba(59,130,246,.1)}
+    .upload-area.has-image{border-style:solid;border-color:var(--success);padding:6px;min-height:auto}
+    .upload-icon{font-size:2.2rem;opacity:.5;transition:var(--transition)}
+    .upload-area:hover .upload-icon{opacity:.9;transform:translateY(-3px)}
+    .upload-text{font-size:.78rem;color:var(--text2)}.upload-hint{font-size:.65rem;color:#556}
+    .preview-img{max-width:100%;max-height:200px;border-radius:var(--radius-sm);object-fit:contain;background:#000}
+    .remove-img-btn{position:absolute;top:8px;right:8px;background:var(--danger);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;z-index:2;transition:var(--transition)}
+    .remove-img-btn:hover{transform:scale(1.2)}
+    .btn{padding:8px 16px;border-radius:18px;border:none;cursor:pointer;font-weight:600;font-size:.75rem;transition:var(--transition);font-family:inherit;letter-spacing:-.2px;display:inline-flex;align-items:center;gap:4px}
+    .btn-primary{background:var(--accent);color:#fff;box-shadow:0 3px 14px rgba(59,130,246,.45)}
+    .btn-primary:hover{background:#2563eb;transform:translateY(-2px);box-shadow:0 5px 20px rgba(59,130,246,.7)}
+    .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+    .btn-copy{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text2);padding:4px 10px;border-radius:12px;font-size:.65rem;cursor:pointer;transition:var(--transition);font-weight:500}
+    .btn-copy:hover{background:rgba(255,255,255,.1);border-color:#fff;color:#fff}
+    .btn-copy.copied{background:var(--success);border-color:var(--success);color:#fff}
+    .result-card{background:rgba(14,22,48,.5);backdrop-filter:blur(6px);border-radius:var(--radius);border:1px solid var(--border);padding:12px 14px;animation:fadeInUp .35s ease;flex-shrink:0}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .result-card h3{font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--accent2);margin-bottom:5px}
+    .result-content{font-size:.78rem;line-height:1.55;white-space:pre-wrap;word-break:break-word;color:var(--text)}
+    .chat-area{display:flex;flex-direction:column;gap:6px;flex:1;overflow-y:auto;padding-right:3px;min-height:160px}
+    .chat-area::-webkit-scrollbar{width:4px}.chat-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+    .chat-msg{padding:8px 12px;border-radius:12px;font-size:.76rem;line-height:1.5;animation:fadeInUp .2s ease;max-width:85%;word-break:break-word}
+    .chat-msg.user{background:var(--accent);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;box-shadow:0 2px 8px rgba(59,130,246,.3)}
+    .chat-msg.ai{background:rgba(14,22,48,.6);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
+    .chat-msg img{max-width:160px;max-height:130px;border-radius:8px;margin:4px 0;cursor:pointer;border:2px solid var(--border);transition:var(--transition)}
+    .chat-msg img:hover{border-color:var(--accent2);transform:scale(1.03)}
+    .chat-msg .img-label{font-size:.6rem;color:#888;margin-top:2px}
+    .chat-input-row{display:flex;gap:5px;align-items:center;flex-shrink:0}
+    .chat-input{flex:1;padding:8px 12px;border-radius:16px;border:1.5px solid var(--border);background:rgba(8,14,35,.5);color:var(--text);font-family:inherit;font-size:.76rem;transition:var(--transition);outline:none}
+    .chat-input:focus{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(59,130,246,.12)}
+    .chat-input::placeholder{color:#556}
+    .attach-btn{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border);background:rgba(8,14,35,.5);color:var(--text2);cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:var(--transition);flex-shrink:0}
+    .attach-btn:hover{border-color:#fff;color:#fff;background:#222}
+    .attach-btn.has-image{border-color:var(--success);color:var(--success);background:rgba(34,197,94,.1)}
+    .send-btn{width:34px;height:34px;border-radius:50%;border:none;background:var(--accent);color:#fff;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:var(--transition);flex-shrink:0;box-shadow:0 2px 8px rgba(59,130,246,.4)}
+    .send-btn:hover{background:#2563eb;transform:scale(1.05)}
+    .send-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+    .chat-preview-bar{display:flex;align-items:center;gap:6px;padding:4px 8px;background:rgba(14,22,48,.5);border-radius:12px;border:1px solid var(--border);flex-shrink:0}
+    .chat-preview-bar img{height:32px;border-radius:5px;object-fit:cover}
+    .chat-preview-bar .preview-name{flex:1;font-size:.62rem;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .chat-preview-bar .preview-remove{cursor:pointer;color:var(--danger);font-weight:bold;font-size:.8rem;padding:2px 4px}
+    .status-bar{text-align:center;font-size:.65rem;color:#777;min-height:14px;flex-shrink:0}
+    .status-bar.loading{color:var(--gold)}.status-bar.error{color:var(--danger)}
+    .code-block-wrapper{margin:5px 0;border-radius:8px;border:1px solid var(--border);overflow:hidden;background:#040a16}
+    .code-block-header{display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.5px}
+    .code-block{padding:7px 10px;font-family:'Fira Code','Consolas',monospace;font-size:.68rem;line-height:1.4;overflow-x:auto;white-space:pre-wrap;word-break:break-word;color:#c8d6e5;max-height:250px;overflow-y:auto}
+    .empty-chat{text-align:center;color:#556;padding:20px;font-size:.75rem}
+    @media(max-width:600px){
+      .app-header{padding:8px 10px;gap:4px}.logo{font-size:.8rem}.mode-tab{padding:5px 8px;font-size:.62rem}
+      .model-select{font-size:.6rem;padding:4px 6px;max-width:130px}.app-body{padding:8px}
+      .chat-msg{max-width:92%;font-size:.7rem}.chat-msg img{max-width:110px;max-height:90px}
+    }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <div class="app-header">
+    <div class="logo"><div class="icon">🧠</div><span>Fahmi AI</span></div>
+    <div class="header-right">
+      <div class="badge thinking-badge on" id="thinkBadge" title="Thinking Mode">
+        <span>Think</span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+      <div class="badge search-badge" id="searchBadge" title="Web Search">
+        <span>Search</span><span class="dot"></span>
+      </div>
+      <select class="model-select" id="modelSelect">
+        <option value="gemini-flash">⚡ Gemini Flash</option>
+        <option value="gemini-pro">💎 Gemini Pro</option>
+        <option value="llama-4">🦙 Llama 4</option>
+        <option value="mistral">🌪️ Mistral</option>
+        <option value="deepseek-v3">🧠 DeepSeek V3</option>
+        <option value="qwen-72b">🌐 Qwen 72B</option>
+      </select>
+      <div class="mode-tabs" id="modeTabs">
+        <button class="mode-tab active" data-mode="chat">💬 Chat</button>
+        <button class="mode-tab" data-mode="image">🖼️ Analisis</button>
+        <button class="mode-tab" data-mode="roblox">🎮 Roblox</button>
+      </div>
+    </div>
+  </div>
+  <div class="app-body" id="appBody"></div>
+</div>
+
+<script>
+(function() {
+  // API Keys
+  const GEMINI_KEY = 'AIzaSyC1aIg8aQMxVmpz438IxmdG7W1e--lrNFE';
+  const OR_KEY = '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';
+  const OR_URL = 'https://openrouter.ai/api/v1/chat/completions';
+
+  const MODELS = {
+    'gemini-flash': { provider:'gemini', id:'gemini-2.0-flash', name:'Gemini 2.0 Flash' },
+    'gemini-pro': { provider:'gemini', id:'gemini-1.5-pro', name:'Gemini 1.5 Pro' },
+    'llama-4': { provider:'openrouter', id:'meta-llama/llama-4-maverick', name:'Llama 4' },
+    'mistral': { provider:'openrouter', id:'mistralai/mistral-small', name:'Mistral Small' },
+    'deepseek-v3': { provider:'openrouter', id:'deepseek/deepseek-chat', name:'DeepSeek V3' },
+    'qwen-72b': { provider:'openrouter', id:'qwen/qwen-2-vl-72b-instruct', name:'Qwen 2 VL 72B' },
+  };
+
+  let currentMode = 'chat';
+  let isProcessing = false;
+  let thinkingOn = true;
+  let searchOn = false;
+  let currentModelKey = 'gemini-flash';
+
+  let chatHist = [], imageHist = [], robloxHist = [];
+  let pendingImg = null, pendingPrev = null;
+
+  const appBody = document.getElementById('appBody');
+  const thinkBadge = document.getElementById('thinkBadge');
+  const searchBadge = document.getElementById('searchBadge');
+  const modelSelect = document.getElementById('modelSelect');
+  const modeTabs = document.getElementById('modeTabs');
+
+  const SAFETY = `⚠️ ATURAN KETAT: Dilarang keras membantu DDoS, hacking, malware, penipuan, konten ilegal/dewasa, kekerasan, atau pelanggaran hukum. Tolak dengan sopan jika diminta.`;
+  const FAHMI_PERSONA = `Kamu Fahmi AI, asisten super cerdas dari Indonesia. Kreatif, teknis, ramah, menguasai programming, desain, game dev (termasuk Roblox), analisis gambar, dan riset. Gaya santai profesional, penuh semangat. ${SAFETY}`;
+
+  function getSys(mode) {
+    let base = SAFETY;
+    if (mode==='roblox') return `${base}\nKamu AI ahli Roblox Studio & scripting Lua. Beri panduan detail + kode Lua dalam \`\`\`lua ... \`\`\`.`;
+    if (mode==='image') return `${base}\nKamu AI analis gambar profesional. Analisis gambar detail dalam Bahasa Indonesia.`;
+    return base;
+  }
+
+  function updateBadges() {
+    thinkBadge.classList.toggle('on', thinkingOn);
+    searchBadge.classList.toggle('on', searchOn);
+    thinkBadge.querySelectorAll('.dot').forEach(d => d.style.display = thinkingOn ? 'inline-block' : 'none');
+    searchBadge.querySelector('.dot').style.display = searchOn ? 'inline-block' : 'none';
+  }
+  thinkBadge.addEventListener('click', () => { thinkingOn = !thinkingOn; updateBadges(); });
+  searchBadge.addEventListener('click', () => { searchOn = !searchOn; updateBadges(); });
+  modelSelect.addEventListener('change', () => { currentModelKey = modelSelect.value; });
+  modeTabs.addEventListener('click', e => {
+    const tab = e.target.closest('.mode-tab');
+    if (!tab || isProcessing) return;
+    currentMode = tab.dataset.mode;
+    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active','roblox-active'));
+    if (currentMode==='roblox') tab.classList.add('roblox-active');
+    else tab.classList.add('active');
+    renderMode();
+  });
+
+  function setProc(v) { isProcessing = v; document.querySelectorAll('.send-btn').forEach(b => b.disabled = v); }
+  function showStatus(msg, type) {
+    const sb = document.querySelector('.status-bar');
+    if (!sb) return;
+    sb.textContent = msg; sb.className = 'status-bar';
+    if (type==='loading') sb.classList.add('loading');
+    if (type==='error') sb.classList.add('error');
+  }
+
+  function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  function rendMD(t) {
+    if (!t) return '';
+    let h = esc(t);
+    h = h.replace(/```(\w*)\s*([\s\S]*?)```/g, (m,lang,code) => {
+      const ec = esc(code.trim()), uid = 'c'+Math.random().toString(36).substr(2,8);
+      return `<div class="code-block-wrapper"><div class="code-block-header"><span>💻 ${(lang||'code').toUpperCase()}</span><button class="btn-copy" onclick="window._cp(this,'${uid}')">📋 Salin</button></div><div class="code-block" id="${uid}">${ec}</div></div>`;
+    });
+    h = h.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>');
+    h = h.replace(/^### (.+)$/gm,'<h4 style="margin:6px 0 3px;color:#c8c8d0;">$1</h4>');
+    h = h.replace(/^## (.+)$/gm,'<h3 style="margin:8px 0 4px;color:#d0d0d8;">$1</h3>');
+    h = h.replace(/^# (.+)$/gm,'<h2 style="margin:10px 0 5px;color:#d8d8e0;">$1</h2>');
+    h = h.replace(/^- (.+)$/gm,'<li style="margin-left:12px;">$1</li>');
+    h = h.replace(/^(\d+)\. (.+)$/gm,'<li style="margin-left:12px;">$2</li>');
+    h = h.replace(/\n/g,'<br>');
+    return h;
+  }
+  window._cp = function(btn, uid) {
+    const el = document.getElementById(uid);
+    const code = el ? el.textContent : '';
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent='✅ Tersalin!';btn.classList.add('copied');
+      setTimeout(()=>{btn.textContent='📋 Salin';btn.classList.remove('copied');},2000);
+    }).catch(()=>{
+      const ta=document.createElement('textarea');ta.value=code;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+      btn.textContent='✅ Tersalin!';btn.classList.add('copied');
+      setTimeout(()=>{btn.textContent='📋 Salin';btn.classList.remove('copied');},2000);
+    });
+  };
+  window._openImg = function(src) {
+    const w=window.open('','_blank','width=800,height=600');
+    if(w) w.document.write(`<img src="${src}" style="max-width:100%;max-height:100vh;display:block;margin:auto;">`);
+  };
+
+  function appendMsg(container, role, content) {
+    const d = document.createElement('div'); d.className = `chat-msg ${role}`; d.innerHTML = content;
+    container.appendChild(d); container.scrollTop = container.scrollHeight; return d;
+  }
+
+  // 🔧 Perbaikan: format content yang valid untuk OpenRouter
+  function formatContentForAPI(content) {
+    // Jika content adalah string, kembalikan sebagai string
+    if (typeof content === 'string') return content;
+    // Jika content adalah array, pastikan formatnya benar
+    if (Array.isArray(content)) {
+      // Jika hanya satu item dan itu text, kembalikan string saja
+      if (content.length === 1 && content[0].type === 'text') return content[0].text;
+      // Jika array, pastikan setiap item punya type yang valid
+      return content.map(item => {
+        if (item.type === 'text') return { type: 'text', text: item.text };
+        if (item.type === 'image_url') return { type: 'image_url', image_url: item.image_url };
+        return item;
+      });
+    }
+    return content;
+  }
+
+  async function callAPI(messages, mode) {
+    const model = MODELS[currentModelKey];
+    const sysPrompt = getSys(mode);
+
+    if (model.provider === 'gemini') {
+      const gm = model.id;
+      let url = `https://generativelanguage.googleapis.com/v1beta/models/${gm}:generateContent?key=${GEMINI_KEY}`;
+      const contents = [];
+      let sysInjected = false;
+      for (const m of messages) {
+        const parts = [];
+        let msgContent = m.content;
+        // Jika content adalah array
+        if (Array.isArray(msgContent)) {
+          for (const item of msgContent) {
+            if (item.type === 'text') parts.push({ text: item.text });
+            else if (item.type === 'image_url') {
+              const urlStr = item.image_url?.url || '';
+              const b64 = urlStr.includes('base64,') ? urlStr.split('base64,')[1] : urlStr;
+              const mime = urlStr.includes('data:') ? urlStr.split(';')[0].split(':')[1] : 'image/png';
+              parts.push({ inlineData: { mimeType: mime, data: b64 } });
+            }
+          }
+        } else if (typeof msgContent === 'string') {
+          parts.push({ text: msgContent });
+        }
+        if (!sysInjected && parts.length > 0) {
+          parts.unshift({ text: sysPrompt + '\n\n' });
+          sysInjected = true;
+        }
+        const role = m.role === 'assistant' ? 'model' : 'user';
+        contents.push({ role, parts });
+      }
+      if (!sysInjected && contents.length > 0) {
+        contents[0].parts.unshift({ text: sysPrompt + '\n\n' });
+      }
+      const body = { contents, generationConfig: { temperature: 0.7, maxOutputTokens: 2500 } };
+      if (searchOn && gm === 'gemini-2.0-flash') body.tools = [{ googleSearch: {} }];
+      const res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+      if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.error?.message || `HTTP ${res.status}`); }
+      const data = await res.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || 'Maaf, tidak ada respons.';
+    } else {
+      // OpenRouter - format yang benar: messages harus array of {role, content}
+      const orMessages = [{ role: 'system', content: sysPrompt }];
+      for (const m of messages) {
+        orMessages.push({
+          role: m.role,
+          content: formatContentForAPI(m.content)
+        });
+      }
+      const body = { model: model.id, messages: orMessages, max_tokens: 2500, temperature: 0.7 };
+      if (searchOn) body.plugins = [{ id: 'web_search' }];
+      console.log('📤 Sending to OpenRouter:', { model: model.id, msgCount: orMessages.length });
+      const res = await fetch(OR_URL, {
+        method:'POST',
+        headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${OR_KEY}`, 'HTTP-Referer':window.location.href, 'X-Title':'Fahmi AI Studio' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const e = await res.json().catch(()=>({}));
+        console.error('❌ OpenRouter error:', e);
+        throw new Error(e.error?.message || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      return data.choices?.[0]?.message?.content || 'Maaf, tidak ada respons.';
+    }
+  }
+
+  function renderMode() { appBody.innerHTML = ''; if (currentMode==='chat') renderChat(); else if (currentMode==='image') renderImage(); else renderRoblox(); }
+
+  // ---------- CHAT ----------
+  function renderChat() {
+    appBody.innerHTML = `
+      <div class="chat-area" id="chatArea"><div class="empty-chat" id="emptyChat">💬 <strong>Fahmi AI Chat</strong><br><small>Kirim pesan atau lampirkan gambar (📎)</small></div></div>
+      <div class="chat-preview-bar" id="previewBar" style="display:none;"><img id="previewImg"><span class="preview-name" id="previewName"></span><span class="preview-remove" id="previewRemove">✕</span></div>
+      <div class="chat-input-row"><button class="attach-btn" id="attachBtn">📎</button><input class="chat-input" id="chatInput" placeholder="Ketik pesan..."><button class="send-btn" id="chatSend">➤</button></div>
+      <input type="file" id="fileInput" accept="image/*" style="display:none;"><div class="status-bar" id="statusBar"></div>
+    `;
+    const ca=document.getElementById('chatArea'), ci=document.getElementById('chatInput'), cs=document.getElementById('chatSend');
+    const ab=document.getElementById('attachBtn'), fi=document.getElementById('fileInput');
+    const pb=document.getElementById('previewBar'), pr=document.getElementById('previewRemove');
+    const empty=document.getElementById('emptyChat');
+    if (chatHist.length>0) { empty.style.display='none'; chatHist.forEach(m=>{if(m.role==='user'||m.role==='assistant')appendMsg(ca,m.role,m.content);}); ca.scrollTop=ca.scrollHeight; }
+    function upd() { cs.disabled = !ci.value.trim() && !pendingImg; }
+    ci.addEventListener('input', upd);
+    ci.addEventListener('keydown', e => { if (e.key==='Enter' && !cs.disabled) send(); });
+    cs.addEventListener('click', send);
+    ab.addEventListener('click', () => fi.click());
+    fi.addEventListener('change', e => { if (e.target.files[0]) loadF(e.target.files[0]); });
+    pr.addEventListener('click', () => { pendingImg=null;pendingPrev=null;pb.style.display='none';ab.classList.remove('has-image');upd();fi.value=''; });
+    ca.addEventListener('dragover', e=>e.preventDefault());
+    ca.addEventListener('drop', e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f?.type.startsWith('image/'))loadF(f);});
+    function loadF(file) {
+      if (!file.type.startsWith('image/')) return;
+      if (file.size>15*1024*1024) { alert('Maks 15MB'); return; }
+      const r=new FileReader();
+      r.onload=ev=>{pendingImg={base64:ev.target.result.split(',')[1],mimeType:file.type};pendingPrev=ev.target.result;document.getElementById('previewImg').src=ev.target.result;document.getElementById('previewName').textContent=file.name;pb.style.display='flex';ab.classList.add('has-image');upd();};
+      r.readAsDataURL(file);
+    }
+    async function send() {
+      const text=ci.value.trim(); if(!text&&!pendingImg) return;
+      setProc(true); cs.disabled=true; ci.value='';
+      const img=pendingImg, prev=pendingPrev; pendingImg=null;pendingPrev=null;
+      pb.style.display='none';ab.classList.remove('has-image');fi.value='';upd();empty.style.display='none';
+      let disp=''; if(prev) disp+=`<img src="${prev}" onclick="window._openImg('${prev}')"><br><span class="img-label">📷 Gambar</span>`;
+      if(text) disp+=(disp?'<br>':'')+esc(text);
+      appendMsg(ca,'user',disp);
+      const lm=appendMsg(ca,'ai','<em style="color:#888;">Berpikir...</em>');
+      showStatus('🔍 Memproses...','loading');
+      try{
+        const msgs=chatHist.map(m=>({role:m.role,content:m.apiContent||m.content}));
+        let nc = text;
+        if (img) {
+          nc = [
+            { type: 'image_url', image_url: { url: `data:${img.mimeType};base64,${img.base64}`, detail: 'high' } }
+          ];
+          if (text) nc.push({ type: 'text', text: text });
+          else nc.push({ type: 'text', text: 'Deskripsikan gambar ini.' });
+        }
+        msgs.push({role:'user',content:nc});
+        const reply=await callAPI(msgs,'chat');
+        chatHist.push({role:'user',content:disp,apiContent:nc},{role:'assistant',content:rendMD(reply),apiContent:reply});
+        if(lm.parentNode)lm.remove(); appendMsg(ca,'ai',rendMD(reply)); showStatus('✅','');
+      }catch(e){if(lm.parentNode)lm.remove();appendMsg(ca,'ai','❌ Error: '+esc(e.message));showStatus('❌ '+e.message,'error');}
+      finally{setProc(false);upd();}
+    }
+    upd();
+  }
+
+  // ---------- IMAGE ----------
+  function renderImage() {
+    appBody.innerHTML = `
+      <div class="upload-area" id="uploadArea"><span class="upload-icon">🖼️</span><span class="upload-text"><strong>Klik atau Seret Gambar</strong></span><span class="upload-hint">PNG, JPG, WEBP (Maks 15MB)</span><input type="file" id="fileInput" accept="image/*" style="display:none;"><button class="remove-img-btn" id="removeImgBtn" style="display:none;">✕</button><img id="previewImg" class="preview-img" style="display:none;"></div>
+      <button class="btn btn-primary" id="analyzeBtn" disabled>✨ Analisis Gambar</button>
+      <div class="status-bar" id="imageStatusBar"></div><div id="imageResults"></div>
+    `;
+    const ua=document.getElementById('uploadArea'), fi=document.getElementById('fileInput'), rm=document.getElementById('removeImgBtn');
+    const ab=document.getElementById('analyzeBtn'), pi=document.getElementById('previewImg');
+    let ib64=null, imime=null;
+    ua.addEventListener('click',e=>{if(e.target!==rm)fi.click();});
+    fi.addEventListener('change',e=>{if(e.target.files[0])load(e.target.files[0]);});
+    ua.addEventListener('dragover',e=>{e.preventDefault();ua.classList.add('drag-over');});
+    ua.addEventListener('dragleave',()=>ua.classList.remove('drag-over'));
+    ua.addEventListener('drop',e=>{e.preventDefault();ua.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f?.type.startsWith('image/'))load(f);});
+    rm.addEventListener('click',e=>{e.stopPropagation();reset();});
+    ab.addEventListener('click',analyze);
+    function load(file) {
+      if(!file.type.startsWith('image/'))return; if(file.size>15*1024*1024){alert('Maks 15MB');return;}
+      imime=file.type;const r=new FileReader();
+      r.onload=ev=>{ib64=ev.target.result.split(',')[1];pi.src=ev.target.result;pi.style.display='block';ua.classList.add('has-image');rm.style.display='flex';ua.querySelector('.upload-icon').style.display='none';ua.querySelector('.upload-text').innerHTML='<strong>✓ Gambar Siap</strong>';ab.disabled=false;};
+      r.readAsDataURL(file);
+    }
+    function reset(){ib64=null;imime=null;imageHist=[];pi.style.display='none';ua.classList.remove('has-image');rm.style.display='none';ua.querySelector('.upload-icon').style.display='';ua.querySelector('.upload-text').innerHTML='<strong>Klik atau Seret Gambar</strong>';ab.disabled=true;document.getElementById('imageResults').innerHTML='';fi.value='';}
+    async function analyze(){
+      if(!ib64||isProcessing)return;setProc(true);ab.disabled=true;document.getElementById('imageResults').innerHTML='';imageHist=[];
+      showStatus('🔍 Menganalisis...','loading');
+      try{
+        const nc = [
+          { type: 'text', text: 'Analisis gambar ini secara detail dan lengkap.' },
+          { type: 'image_url', image_url: { url: `data:${imime};base64,${ib64}`, detail: 'high' } }
+        ];
+        const msgs=[{role:'user',content:nc}];
+        const reply=await callAPI(msgs,'image');
+        imageHist=[{role:'user',content:'Analisis gambar',apiContent:nc},{role:'assistant',content:rendMD(reply),apiContent:reply}];
+        const container=document.getElementById('imageResults');
+        container.innerHTML=`<div class="result-card"><h3>🧠 Hasil Analisis</h3><div class="result-content">${rendMD(reply)}</div></div><div class="result-card" style="margin-top:6px;"><h3>💬 Tanya Lanjutan</h3><div class="chat-area" id="imageChatArea"></div><div class="chat-input-row" style="margin-top:6px;"><input class="chat-input" id="imageChatInput" placeholder="Tanyakan tentang gambar..."><button class="send-btn" id="imageChatSend">➤</button></div></div>`;
+        const ica=document.getElementById('imageChatArea'),ici=document.getElementById('imageChatInput'),ics=document.getElementById('imageChatSend');
+        const isend=async()=>{const q=ici.value.trim();if(!q||isProcessing)return;ici.value='';appendMsg(ica,'user',esc(q));const lm=appendMsg(ica,'ai','<em style="color:#888;">Berpikir...</em>');setProc(true);try{const ms=imageHist.map(m=>({role:m.role,content:m.apiContent||m.content}));ms.push({role:'user',content:q});const r=await callAPI(ms,'image');imageHist.push({role:'user',content:q,apiContent:q},{role:'assistant',content:r,apiContent:r});if(lm.parentNode)lm.remove();appendMsg(ica,'ai',rendMD(r));}catch(e){if(lm.parentNode)lm.remove();appendMsg(ica,'ai','❌ '+esc(e.message));}finally{setProc(false);}};
+        ics.addEventListener('click',isend);ici.addEventListener('keydown',e=>{if(e.key==='Enter')isend();});
+        showStatus('✅ Selesai.','');
+      }catch(e){showStatus('❌ '+e.message,'error');}
+      finally{setProc(false);ab.disabled=false;}
+    }
+  }
+
+  // ---------- ROBLOX ----------
+  function renderRoblox() {
+    appBody.innerHTML = `
+      <div class="chat-area" id="robloxChatArea"><div class="empty-chat" id="robloxEmpty">🎮 <strong>Roblox Studio Chat</strong><br><small>Kirim gambar & tanya scripting/building</small></div></div>
+      <div class="chat-preview-bar" id="robloxPreviewBar" style="display:none;"><img id="robloxPreviewImg"><span class="preview-name" id="robloxPreviewName"></span><span class="preview-remove" id="robloxPreviewRemove">✕</span></div>
+      <div class="chat-input-row"><button class="attach-btn" id="robloxAttachBtn">📎</button><input class="chat-input" id="robloxChatInput" placeholder="Tanyakan Roblox Studio..."><button class="send-btn" id="robloxChatSend">➤</button></div>
+      <input type="file" id="robloxFileInput" accept="image/*" style="display:none;"><div class="status-bar" id="robloxStatusBar"></div>
+    `;
+    const ca=document.getElementById('robloxChatArea'), ci=document.getElementById('robloxChatInput'), cs=document.getElementById('robloxChatSend');
+    const ab=document.getElementById('robloxAttachBtn'), fi=document.getElementById('robloxFileInput');
+    const pb=document.getElementById('robloxPreviewBar'), pr=document.getElementById('robloxPreviewRemove');
+    const empty=document.getElementById('robloxEmpty');
+    let rImg=null, rPrev=null;
+    if (robloxHist.length>0) { empty.style.display='none'; robloxHist.forEach(m=>{if(m.role==='user'||m.role==='assistant')appendMsg(ca,m.role,m.content);}); ca.scrollTop=ca.scrollHeight; }
+    function upd() { cs.disabled = !ci.value.trim() && !rImg; }
+    ci.addEventListener('input', upd);
+    ci.addEventListener('keydown', e => { if (e.key==='Enter' && !cs.disabled) send(); });
+    cs.addEventListener('click', send);
+    ab.addEventListener('click', () => fi.click());
+    fi.addEventListener('change', e => { if (e.target.files[0]) loadF(e.target.files[0]); });
+    pr.addEventListener('click', () => { rImg=null;rPrev=null;pb.style.display='none';ab.classList.remove('has-image');upd();fi.value=''; });
+    ca.addEventListener('dragover', e=>e.preventDefault());
+    ca.addEventListener('drop', e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f?.type.startsWith('image/'))loadF(f);});
+    function loadF(file) {
+      if(!file.type.startsWith('image/'))return; if(file.size>15*1024*1024){alert('Maks 15MB');return;}
+      const r=new FileReader();
+      r.onload=ev=>{rImg={base64:ev.target.result.split(',')[1],mimeType:file.type};rPrev=ev.target.result;document.getElementById('robloxPreviewImg').src=ev.target.result;document.getElementById('robloxPreviewName').textContent=file.name;pb.style.display='flex';ab.classList.add('has-image');upd();};
+      r.readAsDataURL(file);
+    }
+    async function send() {
+      const text=ci.value.trim(); if(!text&&!rImg) return;
+      setProc(true); cs.disabled=true; ci.value='';
+      const img=rImg, prev=rPrev; rImg=null;rPrev=null;
+      pb.style.display='none';ab.classList.remove('has-image');fi.value='';upd();empty.style.display='none';
+      let disp=''; if(prev) disp+=`<img src="${prev}" onclick="window._openImg('${prev}')"><br><span class="img-label">📷 Gambar</span>`;
+      if(text) disp+=(disp?'<br>':'')+esc(text);
+      appendMsg(ca,'user',disp);
+      const lm=appendMsg(ca,'ai','<em style="color:#888;">🎮 Menganalisis & membuat kode...</em>');
+      showStatus('🔍 Memproses...','loading');
+      try{
+        const msgs=robloxHist.map(m=>({role:m.role,content:m.apiContent||m.content}));
+        let nc = text;
+        if (img) {
+          nc = [
+            { type: 'image_url', image_url: { url: `data:${img.mimeType};base64,${img.base64}`, detail: 'high' } }
+          ];
+          if (text) nc.push({ type: 'text', text: text });
+          else nc.push({ type: 'text', text: 'Analisis gambar ini untuk Roblox Studio, berikan panduan dan kode Lua.' });
+        }
+        msgs.push({role:'user',content:nc});
+        const reply=await callAPI(msgs,'roblox');
+        robloxHist.push({role:'user',content:disp,apiContent:nc},{role:'assistant',content:rendMD(reply),apiContent:reply});
+        if(lm.parentNode)lm.remove(); appendMsg(ca,'ai',rendMD(reply)); showStatus('✅','');
+      }catch(e){if(lm.parentNode)lm.remove();appendMsg(ca,'ai','❌ Error: '+esc(e.message));showStatus('❌ '+e.message,'error');}
+      finally{setProc(false);upd();}
+    }
+    upd();
+  }
+
+  updateBadges();
+  renderMode();
+  console.log('✅ Fahmi AI Studio siap! Model gratis | Format API diperbaiki | Thinking:'+(thinkingOn?'ON':'OFF')+' Search:'+(searchOn?'ON':'OFF'));
+})();
+</script>
+</body>
+</html>
